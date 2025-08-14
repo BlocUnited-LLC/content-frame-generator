@@ -59,9 +59,9 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 80px;
-            height: 80px;
-            background: rgba(14, 15, 18, 0.8);
+            width: 140px;
+            height: 100px;
+            background: rgba(14, 15, 18, 0.9);
             border-radius: 12px;
             display: none;
             align-items: center;
@@ -75,8 +75,8 @@
         }
         
         .media-logo-overlay img {
-            max-width: 60px;
-            max-height: 60px;
+            max-width: 120px;
+            max-height: 80px;
             object-fit: contain;
         }
         
@@ -94,19 +94,19 @@
         
         .logo-placeholder {
             background: #0E0F12;
-            padding: 16px 24px;
-            border-radius: 50%;
+            padding: 12px 20px;
+            border-radius: 16px;
             border: 3px solid #405DA0;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 100px;
-            min-height: 100px;
+            min-width: 140px;
+            min-height: 80px;
         }
         
         .logo-placeholder img {
-            max-width: 60px;
-            max-height: 60px;
+            max-width: 120px;
+            max-height: 70px;
             object-fit: contain;
         }
         
@@ -114,8 +114,8 @@
             position: absolute;
             left: 60px;
             right: 60px;
-            top: 1340px;
-            height: 520px;
+            top: 1360px;
+            height: 500px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -329,24 +329,24 @@
                     container.style.height = '1920px';
                     mediaContainer.style.height = '1200px';
                     logoDiv.style.top = '1280px';
-                    textContainer.style.top = '1340px';
-                    textContainer.style.height = '520px';
+                    textContainer.style.top = '1360px';
+                    textContainer.style.height = '500px';
                     break;
                     
                 case 'square':
                     container.style.width = '1080px';
                     container.style.height = '1080px';
-                    mediaContainer.style.height = '640px';
-                    logoDiv.style.top = '700px';
-                    textContainer.style.top = '750px';
+                    mediaContainer.style.height = '620px';
+                    logoDiv.style.top = '680px';
+                    textContainer.style.top = '760px';
                     textContainer.style.height = '280px';
                     break;
                     
                 case 'story':
                     container.style.width = '1080px';
                     container.style.height = '1920px';
-                    mediaContainer.style.height = '1300px';
-                    logoDiv.style.top = '1380px';
+                    mediaContainer.style.height = '1280px';
+                    logoDiv.style.top = '1360px';
                     textContainer.style.top = '1440px';
                     textContainer.style.height = '420px';
                     break;
@@ -354,9 +354,9 @@
                 case 'post':
                     container.style.width = '1080px';
                     container.style.height = '1350px';
-                    mediaContainer.style.height = '800px';
-                    logoDiv.style.top = '880px';
-                    textContainer.style.top = '930px';
+                    mediaContainer.style.height = '780px';
+                    logoDiv.style.top = '860px';
+                    textContainer.style.top = '940px';
                     textContainer.style.height = '360px';
                     break;
             }
