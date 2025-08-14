@@ -59,14 +59,18 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 140px;
-            height: 100px;
-            background: rgba(14, 15, 18, 0.9);
-            border-radius: 12px;
+            width: 200px; /* larger for readability */
+            height: 140px;
+            background: linear-gradient(180deg, rgba(14,15,18,0.85), rgba(14,15,18,0.75));
+            border-radius: 14px;
             display: none;
             align-items: center;
             justify-content: center;
             border: 2px solid #405DA0;
+            box-shadow:
+                0 0 0 2px rgba(64,93,160,0.35) inset,
+                0 12px 40px rgba(64,93,160,0.35),
+                0 2px 8px rgba(0,0,0,0.6);
             backdrop-filter: blur(10px);
         }
         
@@ -75,9 +79,12 @@
         }
         
         .media-logo-overlay img {
-            max-width: 120px;
-            max-height: 80px;
+            max-width: 92%;
+            max-height: 86%;
             object-fit: contain;
+            filter: brightness(1.1) contrast(1.08)
+                    drop-shadow(0 0 12px rgba(64,93,160,0.55))
+                    drop-shadow(0 4px 10px rgba(0,0,0,0.6));
         }
         
         .logo-divider {
@@ -93,21 +100,29 @@
         }
         
         .logo-placeholder {
-            background: #0E0F12;
-            padding: 12px 20px;
-            border-radius: 16px;
+            position: relative;
+            background: radial-gradient(60% 80% at 50% 40%, rgba(64,93,160,0.22), rgba(14,15,18,0.9));
+            padding: 16px 28px;
+            border-radius: 18px;
             border: 3px solid #405DA0;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 140px;
-            min-height: 80px;
+            min-width: 220px;  /* larger badge */
+            min-height: 120px;
+            box-shadow:
+                0 0 0 2px rgba(64,93,160,0.35) inset,
+                0 14px 48px rgba(64,93,160,0.35),
+                0 4px 14px rgba(0,0,0,0.7);
         }
         
         .logo-placeholder img {
-            max-width: 120px;
-            max-height: 70px;
+            max-width: 190px;
+            max-height: 100px;
             object-fit: contain;
+            filter: brightness(1.12) contrast(1.08)
+                    drop-shadow(0 0 14px rgba(64,93,160,0.55))
+                    drop-shadow(0 6px 12px rgba(0,0,0,0.6));
         }
         
         .text-container {
