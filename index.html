@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Slide Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* Main slide container - Default: TikTok/Reels 9:16 */
+        .slide-container {
+            position: relative;
+            width: 1080px;
+            height: 1920px;
+            background: #0E0F12;
+            overflow: hidden;
+        }
+        
+        /* Media container - supports both images and videos */
+        .media-container {
+            position: absolute;
+            left: 40px;
+            right: 40px;
+            top: 40px;
+            height: 1200px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #111;
+            border: 4px solid #405DA0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide-image, .slide-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .slide-image.active, .slide-video.active {
+            display: block;
+        }
+        
+        /* Logo watermark overlay (optional) */
+        .media-logo-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(14, 15, 18, 0.8);
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border: 2px solid #405DA0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .media-logo-overlay.active {
+            display: flex;
+        }
+        
+        .media-logo-overlay img {
+            max-width: 60px;
+            max-height: 60px;
+            object-fit: contain;
+        }
+        
+        /* Logo divider */
+        .logo-divider {
+            position: absolute;
+            left: 40px;
+            right: 40px;
+            top: 1280px;
+            height: 6px;
+            background: linear-gradient(90deg, #405DA0 0%, #405DA0 45%, transparent 50%, #405DA0 55%, #405DA0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Center logo */
+        .logo-placeholder {
+            background: #0E0F12;
+            padding: 16px 24px;
+            border-radius: 50%;
+            font-size: 48px;
+            border: 3px solid #405DA0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+            min-height: 100px;
+        }
+        
+        .logo-placeholder:empty::before {
+            content: "LOGO";
+            opacity: 0.3;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .logo-placeholder img {
+            max-width: 60px;
+            max-height: 60px;
+            object-fit: contain;
+        }
+        
+        /* Text container with frame */
+        .text-container {
+            position: absolute;
+            left: 60px;
+            right: 60px;
+            top: 1340px;
+            height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            padding: 30px;
+            background: rgba(14, 15, 18, 0.5);
+            border-radius: 16px;
+            border: 2px solid #405DA0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .subhead {
+            color: #405DA0;
+            font-weight: 700;
+            font-size: 52px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            text-shadow: 0 3px 15px rgba(0,0,0,.6);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            min-height: 60px;
+        }
+        
+        .subhead:empty::before {
+            content: "[SUBHEADING]";
+            opacity: 0.3;
+        }
+        
+        .headline {
+            color: #405DA0;
+            text-transform: uppercase;
+            font-weight: 900;
+            font-size: 88px;
+            line-height: 0.9;
+            letter-spacing: 1px;
+            text-shadow: 0 4px 25px rgba(0,0,0,.5);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+        
+        .headline:empty::before {
+            content: "[HEADLINE]";
+            opacity: 0.3;
+        }
+        
+        /* Outer frame border */
+        .frame-border {
+            pointer-events: none;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 6px solid #405DA0;
+            border-radius: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container" id="slideContainer">
+        <!-- Media Section (Image or Video) -->
+        <div class="media-container">
+            <img 
+                class="slide-image active" 
+                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1080' height='1200'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23405DA0;stop-opacity:0.8'/%3E%3Cstop offset='100%25' style='stop-color:%230E0F12;stop-opacity:0.9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1080' height='1200' fill='url(%23g)'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%23405DA0' font-size='48' opacity='0.3' font-family='Inter'%3E[MEDIA PLACEHOLDER]%3C/text%3E%3C/svg%3E" 
+                alt="slide"
+                id="dynamicImage"
+            />
+            <video 
+                class="slide-video" 
+                id="dynamicVideo"
+                muted
+                loop
+                autoplay
+                playsinline
+            >
+                <source src="" type="video/mp4">
+            </video>
+            
+            <!-- Optional logo overlay on media -->
+            <div class="media-logo-overlay" id="mediaLogoOverlay">
+                <span id="mediaLogoContent"><!-- Logo --></span>
+            </div>
+        </div>
+        
+        <!-- Center Logo Divider -->
+        <div class="logo-divider">
+            <div class="logo-placeholder" id="logoPlaceholder">
+                <!-- Logo will be inserted here -->
+            </div>
+        </div>
+        
+        <!-- Text Container with Frame -->
+        <div class="text-container">
+            <div class="subhead" id="dynamicSubhead">
+                <!-- Subheading will be inserted here -->
+            </div>
+            <div class="headline" id="dynamicHeadline">
+                <!-- Main headline will be inserted here -->
+            </div>
+        </div>
+        
+        <!-- Outer Frame Border -->
+        <div class="frame-border"></div>
+    </div>
+
+    <script>
+        /**
+         * AUTO-FIT TEXT SYSTEM
+         * Automatically adjusts font sizes to prevent overflow
+         */
+        function autoFitText(element, maxSize, minSize = 24, step = 4) {
+            const container = element.parentElement;
+            let fontSize = maxSize;
+            
+            element.style.fontSize = fontSize + 'px';
+            
+            let attempts = 0;
+            while (container.scrollHeight > container.clientHeight && fontSize > minSize && attempts < 50) {
+                fontSize -= step;
+                element.style.fontSize = fontSize + 'px';
+                attempts++;
+            }
+            
+            if (container.scrollHeight > container.clientHeight && fontSize <= minSize) {
+                element.style.lineHeight = '0.8';
+            }
+            
+            return fontSize;
+        }
+        
+        function fitTextToContainer() {
+            const subhead = document.getElementById('dynamicSubhead');
+            const headline = document.getElementById('dynamicHeadline');
+            const container = document.querySelector('.text-container');
+            
+            // Don't try to fit empty text
+            if (!subhead.textContent.trim() && !headline.textContent.trim()) {
+                return;
+            }
+            
+            // Reset line heights
+            subhead.style.lineHeight = '1.1';
+            headline.style.lineHeight = '0.9';
+            
+            // Auto-fit subhead
+            if (subhead.textContent.trim()) {
+                autoFitText(subhead, 52, 24, 2);
+            }
+            
+            // Auto-fit headline
+            if (headline.textContent.trim()) {
+                autoFitText(headline, 88, 32, 4);
+            }
+            
+            // Final adjustment if needed
+            let finalAttempts = 0;
+            while (container.scrollHeight > container.clientHeight && finalAttempts < 10) {
+                const currentSubSize = parseInt(subhead.style.fontSize);
+                const currentHeadSize = parseInt(headline.style.fontSize);
+                
+                if (currentSubSize > 24 && subhead.textContent.trim()) {
+                    subhead.style.fontSize = (currentSubSize - 2) + 'px';
+                }
+                if (currentHeadSize > 32 && headline.textContent.trim()) {
+                    headline.style.fontSize = (currentHeadSize - 4) + 'px';
+                }
+                finalAttempts++;
+            }
+        }
+        
+        /**
+         * MAIN UPDATE FUNCTION FOR N8N
+         * 
+         * Examples:
+         * window.updateSlide({
+         *   mediaType: 'image',  // 'image' or 'video'
+         *   mediaSrc: 'https://your-media-url.jpg',
+         *   headline: 'YOUR HEADLINE',
+         *   subhead: 'YOUR SUBHEAD',
+         *   logo: '🚀',  // Can be emoji, text, or HTML
+         *   logoImage: 'https://your-logo.png',  // Optional: use image for logo
+         *   showMediaLogo: true,  // Show logo overlay on media
+         *   format: 'reels'  // 'reels', 'square', 'story', 'post'
+         * });
+         */
+        function updateSlide(data) {
+            // Handle media (image or video)
+            if (data.mediaType && data.mediaSrc) {
+                const image = document.getElementById('dynamicImage');
+                const video = document.getElementById('dynamicVideo');
+                
+                if (data.mediaType === 'video') {
+                    image.classList.remove('active');
+                    video.classList.add('active');
+                    video.querySelector('source').src = data.mediaSrc;
+                    video.load();
+                } else {
+                    video.classList.remove('active');
+                    image.classList.add('active');
+                    image.src = data.mediaSrc;
+                }
+            } else if (data.imageSrc) {
+                // Backward compatibility
+                document.getElementById('dynamicImage').src = data.imageSrc;
+            }
+            
+            // Update text
+            if (data.subhead) {
+                document.getElementById('dynamicSubhead').textContent = data.subhead;
+            }
+            
+            if (data.headline) {
+                document.getElementById('dynamicHeadline').textContent = data.headline;
+            }
+            
+            // Update center logo
+            if (data.logoImage) {
+                document.getElementById('logoPlaceholder').innerHTML = 
+                    `<img src="${data.logoImage}" alt="logo">`;
+            } else if (data.logo) {
+                document.getElementById('logoPlaceholder').innerHTML = data.logo;
+            }
+            
+            // Handle media logo overlay
+            if (data.showMediaLogo) {
+                const overlay = document.getElementById('mediaLogoOverlay');
+                overlay.classList.add('active');
+                if (data.logoImage) {
+                    document.getElementById('mediaLogoContent').innerHTML = 
+                        `<img src="${data.logoImage}" alt="logo">`;
+                } else if (data.logo) {
+                    document.getElementById('mediaLogoContent').innerHTML = data.logo;
+                }
+            }
+            
+            // Change format if specified
+            if (data.format) {
+                setFormat(data.format);
+            }
+            
+            // Auto-fit text
+            setTimeout(() => {
+                fitTextToContainer();
+            }, 50);
+        }
+        
+        /**
+         * Set social media format
+         */
+        function setFormat(format) {
+            const container = document.getElementById('slideContainer');
+            const mediaContainer = document.querySelector('.media-container');
+            const textContainer = document.querySelector('.text-container');
+            const logoDiv = document.querySelector('.logo-divider');
+            
+            switch(format) {
+                case 'reels': // TikTok/Reels 9:16
+                    container.style.width = '1080px';
+                    container.style.height = '1920px';
+                    mediaContainer.style.height = '1200px';
+                    logoDiv.style.top = '1280px';
+                    textContainer.style.top = '1340px';
+                    textContainer.style.height = '520px';
+                    break;
+                    
+                case 'square': // Instagram Square 1:1
+                    container.style.width = '1080px';
+                    container.style.height = '1080px';
+                    mediaContainer.style.height = '640px';
+                    logoDiv.style.top = '700px';
+                    textContainer.style.top = '750px';
+                    textContainer.style.height = '280px';
+                    break;
+                    
+                case 'story': // Stories 9:16
+                    container.style.width = '1080px';
+                    container.style.height = '1920px';
+                    mediaContainer.style.height = '1300px';
+                    logoDiv.style.top = '1380px';
+                    textContainer.style.top = '1440px';
+                    textContainer.style.height = '420px';
+                    break;
+                    
+                case 'post': // Instagram Post 4:5
+                    container.style.width = '1080px';
+                    container.style.height = '1350px';
+                    mediaContainer.style.height = '800px';
+                    logoDiv.style.top = '880px';
+                    textContainer.style.top = '930px';
+                    textContainer.style.height = '360px';
+                    break;
+            }
+            
+            setTimeout(() => {
+                fitTextToContainer();
+            }, 100);
+        }
+        
+        /**
+         * Load content from URL parameters
+         */
+        function loadFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const data = {};
+            
+            // Collect all parameters
+            ['mediaType', 'mediaSrc', 'imageSrc', 'headline', 'subhead', 
+             'logo', 'logoImage', 'showMediaLogo', 'format'].forEach(param => {
+                if (params.get(param)) {
+                    data[param] = decodeURIComponent(params.get(param));
+                }
+            });
+            
+            // Convert showMediaLogo to boolean
+            if (data.showMediaLogo === 'true') {
+                data.showMediaLogo = true;
+            }
+            
+            if (Object.keys(data).length > 0) {
+                updateSlide(data);
+            }
+        }
+        
+        // Expose to global scope for N8N
+        window.updateSlide = updateSlide;
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromURL();
+            setTimeout(() => {
+                fitTextToContainer();
+            }, 200);
+        });
+    </script>
+</body>
+</html>
