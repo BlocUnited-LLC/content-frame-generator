@@ -19,12 +19,16 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-        }
+        }    
+        
         
         .slide-container {
             position: relative;
-            width: 1080px;
-            height: 1920px;
+            width: 100vw;     /* take full width */
+            height: 100vh;    /* take full height */
+            max-width: 1080px; /* don’t exceed base design */
+            max-height: 1920px;
+            aspect-ratio: 1080 / 1920;
             background: #0E0F12;
             overflow: hidden;
         }
