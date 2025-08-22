@@ -340,54 +340,45 @@
         }
         
         function setFormat(format) {
-            const container = document.getElementById('slideContainer');
-            const mediaContainer = document.querySelector('.media-container');
-            const textContainer = document.querySelector('.text-container');
-            const logoDiv = document.querySelector('.logo-divider');
+    const container = document.getElementById('slideContainer');
+    const mediaContainer = document.querySelector('.media-container');
+    const textContainer = document.querySelector('.text-container');
+    const logoDiv = document.querySelector('.logo-divider');
+
+    switch(format) {
+        case 'reels':
+        case 'story': // both portrait
+            container.style.width = '1024px';
+            container.style.height = '1536px';
+            mediaContainer.style.height = '1000px';
+            logoDiv.style.top = '1100px';
+            textContainer.style.top = '1180px';
+            textContainer.style.height = '300px';
+            break;
             
-            switch(format) {
-                case 'reels':
-                    container.style.width = '1080px';
-                    container.style.height = '1920px';
-                    mediaContainer.style.height = '1200px';
-                    logoDiv.style.top = '1280px';
-                    textContainer.style.top = '1360px';
-                    textContainer.style.height = '500px';
-                    break;
-                    
-                case 'square':
-                    container.style.width = '1080px';
-                    container.style.height = '1080px';
-                    mediaContainer.style.height = '620px';
-                    logoDiv.style.top = '680px';
-                    textContainer.style.top = '760px';
-                    textContainer.style.height = '280px';
-                    break;
-                    
-                case 'story':
-                    container.style.width = '1080px';
-                    container.style.height = '1920px';
-                    mediaContainer.style.height = '1280px';
-                    logoDiv.style.top = '1360px';
-                    textContainer.style.top = '1440px';
-                    textContainer.style.height = '420px';
-                    break;
-                    
-                case 'post':
-                    container.style.width = '1080px';
-                    container.style.height = '1350px';
-                    mediaContainer.style.height = '780px';
-                    logoDiv.style.top = '860px';
-                    textContainer.style.top = '940px';
-                    textContainer.style.height = '360px';
-                    break;
-            }
+        case 'square':
+            container.style.width = '1024px';
+            container.style.height = '1024px';
+            mediaContainer.style.height = '600px';
+            logoDiv.style.top = '700px';
+            textContainer.style.top = '780px';
+            textContainer.style.height = '200px';
+            break;
             
-            setTimeout(() => {
-                fitTextToContainer();
-            }, 100);
-        }
-        
+        case 'post': // landscape
+            container.style.width = '1536px';
+            container.style.height = '1024px';
+            mediaContainer.style.height = '620px';
+            logoDiv.style.top = '700px';
+            textContainer.style.top = '780px';
+            textContainer.style.height = '200px';
+            break;
+    }
+
+    setTimeout(() => {
+        fitTextToContainer();
+    }, 100);
+}
         function loadFromURL() {
             const params = new URLSearchParams(window.location.search);
             const data = {};
