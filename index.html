@@ -274,13 +274,16 @@
             subhead.style.lineHeight = '1.1';
             headline.style.lineHeight = '0.9';
             
+           
+
             if (subhead.textContent.trim()) {
-                autoFitText(subhead, 52, 24, 2);
+               autoFitText(subhead, 68, 28, 2);  // was 52 → now 68 max
             }
-            
+
             if (headline.textContent.trim()) {
-                autoFitText(headline, 88, 32, 4);
+                autoFitText(headline, 74, 32, 4); // was 88 → now 74 max
             }
+
             
             let finalAttempts = 0;
             while (container.scrollHeight > container.clientHeight && finalAttempts < 10) {
